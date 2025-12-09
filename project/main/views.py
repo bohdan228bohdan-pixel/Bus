@@ -76,3 +76,5 @@ def registerindex(request):
 
 def redirect_to_home(request):
     return HttpResponseRedirect('/home/')
+def eos(request):
+    return render(request, 'nashbusindex/eos.html')

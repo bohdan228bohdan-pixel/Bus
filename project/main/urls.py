@@ -39,6 +39,8 @@ urlpatterns = [
     path('nashbusindex/mercedes2.html', views.mercedes2, name='nashbus_mercedes2_html'),
     path('nashbusindex/Neoplanred.html', views.neoplanred, name='nashbus_neoplanred_html'),
     path('nashbusindex/neolplanwhite.html', views.neolplanwhite, name='nashbus_neolplanwhite.html'),
+    path('eos/', views.eos, name='eos'),
     path('password_change/', PasswordChangeView.as_view(template_name='registration/password_change_form.html', success_url='/profile/'), name='password_change'),
 ]
+
 
