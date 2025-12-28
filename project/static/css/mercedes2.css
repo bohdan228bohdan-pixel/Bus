@@ -1,0 +1,14 @@
+/* Стилі для сторінки Mercedes */
+@import url('header.css');
+@import url('buttons.css');
+@import url('main.css');
+@import url('sections.css');
+
+/* Додаткові стилі для mercedes2.html */
+.mercedes-banner {
+  width: 100%;
+  height: 350px;
+  background: url('../img/mercedes-banner.jpg') center/cover no-repeat;
+  border-radius: 18px;
+  margin-bottom: 30px;
+}

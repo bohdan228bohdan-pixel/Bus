@@ -1,0 +1,101 @@
+/* ============================= */
+/* 📱 АДАПТАЦІЯ ДЛЯ ТЕЛЕФОНІВ     */
+/* ============================= */
+@media (max-width: 768px) {
+
+    /* Банер */
+    .banner {
+        height: 160px;
+        padding: 10px 15px;
+        justify-content: center;
+        background-position: center;
+    }
+
+    .banner .menu {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .banner .menu a {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        border-radius: 15px;
+    }
+
+    /* HERO */
+    .hero {
+        height: auto;
+        padding: 60px 15px 40px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero .phones {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    /* Каталог автобусів */
+    .bus-catalog h2 {
+        font-size: 2rem;
+    }
+
+    .bus-list {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    @media (max-width: 480px) {
+        .bus-list {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .bus-card img {
+        height: 130px;
+    }
+
+    /* Як ми працюємо */
+    .steps {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .step {
+        max-width: 300px;
+        text-align: center;
+    }
+
+    /* Чому вибирають нас */
+    .why-choose-us {
+        padding: 50px 15px;
+    }
+
+    .why-choose-us h2 {
+        font-size: 1.8rem;
+    }
+
+    .reasons-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .reason {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+
+    .reason-text {
+        text-align: center;
+    }
+
+}

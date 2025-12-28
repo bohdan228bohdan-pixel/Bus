@@ -1,0 +1,35 @@
+.top-image {
+  position: relative;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.top-image img {
+  width: 60%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 12px;
+  display: block;
+}
+
+.top-image .links {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 40%;
+  padding-bottom: 0;
+}
+
+
+.banner {
+    position: relative;
+    height: 420px;
+    background-image: url("5269672762366693828.jpg");
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 180px;  /* <<< ДОДАНО ГОЛОВНИЙ ФІКС */
+}

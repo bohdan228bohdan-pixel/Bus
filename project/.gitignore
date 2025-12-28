@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.env
+*.venv
+env/
+project/buswebsite/settings.py
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django
+*.sqlite3
+db.sqlite3
+/staticfiles/
+__pycache__/
+*.pyc
+media/
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Byte-compiled / distribution
+*.egg-info/
+*.egg
+*.dist-info/
+build/
+develop-eggs/
+.eggs/
+pip-log.txt

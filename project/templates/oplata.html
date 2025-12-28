@@ -1,0 +1,17 @@
+{% load static %}
+{% extends 'base.html' %}
+
+{% block title %}Оплата — Dieller Bus{% endblock %}
+
+{% block content %}
+    <div class="container" style="max-width:720px;margin:80px auto;text-align:center">
+        <div class="card card-card p-4" data-aos="zoom-in">
+            <h1 style="margin:0 0 8px;color:var(--accent-red)">Дякуємо!</h1>
+            <p style="color:var(--muted);font-size:1.05rem">Оплата успішна — чек та квиток буде надіслано на ваш email.</p>
+            <div style="margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                <a class="btn btn-book" href="{% url 'home' %}">Головна</a>
+                <a class="btn btn-details" href="{% url 'kvitokindex' %}">Замовити ще</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,123 @@
+/* ===== Заголовки ===== */
+.section-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 40px 0 30px;
+    color: #333;
+}
+
+.section-title.white {
+    color: #fff;
+}
+
+/* ===== Як з нами працювати ===== */
+.work-steps {
+    padding: 50px 0;
+    background: #ffffff;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.step-item {
+    max-width: 220px;
+}
+
+.step-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    border: 3px solid #f7931e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.step-icon img {
+    width: 40px;
+}
+
+.step-item h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.step-item p {
+    color: #666;
+    font-size: 14px;
+}
+
+
+/* ===== Чому вибирають нас ===== */
+.why-us {
+    background: #444;
+    padding: 60px 0;
+    margin-top: 30px;
+}
+
+.why-container {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+}
+
+.why-item {
+    color: #fff;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.why-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 3px solid #f7931e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.why-icon img {
+    width: 30px;
+}
+
+.why-item h3 {
+    margin: 0 0 5px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.why-item p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #ddd;
+}
+
+
+/* ===== Адаптив під телефон ===== */
+@media (max-width: 900px) {
+    .why-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .why-container {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+}

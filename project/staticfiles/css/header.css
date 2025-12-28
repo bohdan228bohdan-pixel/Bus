@@ -1,0 +1,60 @@
+/* Header styles for all pages */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 20px auto;
+  padding: 18px 30px 10px 30px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+}
+.logo {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #ff7f00;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.registration-btn, .profile-btn {
+  padding: 10px 26px;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #ff7f00 0%, #ffae42 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(255,127,0,0.13);
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  outline: none;
+}
+.registration-btn:hover, .profile-btn:hover {
+  background: linear-gradient(90deg, #ffae42 0%, #ff7f00 100%);
+  color: #222;
+  box-shadow: 0 4px 16px #ffae42;
+}
+.profile-icon {
+  font-size: 1.3em;
+  margin-right: 4px;
+}
+@media (max-width: 700px) {
+  .header-container {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 8px 8px 8px;
+  }
+  .logo {
+    font-size: 1.3rem;
+  }
+  .registration-btn, .profile-btn {
+    font-size: 1rem;
+    padding: 8px 14px;
+  }
+}

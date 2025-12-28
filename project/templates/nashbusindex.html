@@ -1,0 +1,682 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Каталог автобусів — Dieller Bus{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* Reset & base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0a0a;
+    color: #8b0000;
+    line-height: 1.6;
+  }
+  a {
+    color: #8b0000; 
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover,
+  a:focus {
+    color: #b22222;
+    outline: none;
+  }
+  img {
+    max-width: 100%; display: block;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(139,0,0,0.5);
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: #0a0a0a;
+    box-shadow: 0 2px 6px rgba(139,0,0,0.5);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .logo {
+    font-weight: 900;
+    font-size: 1.8rem;
+    color: #8b0000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 4px #b22222;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #8b0000;
+  }
+  nav ul li {
+    white-space: nowrap;
+  }
+  nav ul li a {
+    padding: 4px 0;
+    color: #8b0000;
+  }
+  nav ul li a:hover,
+  nav ul li a:focus {
+    color: #b22222;
+  }
+  .lang-switch {
+    border: 1.5px solid #8b0000;
+    border-radius: 6px;
+    padding: 3px 8px;
+    color: #8b0000;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .lang-switch:hover,
+  .lang-switch:focus {
+    background-color: #8b0000;
+    color: #0a0a0a;
+  }
+
+  /* Hero Section */
+  .hero {
+    position: relative;
+    background: url('{% static "img/hero-bus.jpg" %}') center center/cover no-repeat;
+    height: 360px;
+    color: #8b0000;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 16px;
+    text-shadow: 0 0 5px #b22222;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(10,10,10,0.85);
+    z-index: 0;
+    border-radius: 0 0 24px 24px;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+  .hero h1 strong {
+    color: #b22222;
+  }
+  .hero p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  .hero .phones {
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+    color: #b22222;
+  }
+  .hero .phones span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+  .hero .phones span svg {
+    fill: #b22222;
+    width: 18px;
+    height: 18px;
+  }
+  .hero .catalog-link {
+    margin-top: 30px;
+    font-size: 1.1rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #8b0000;
+    text-shadow: 0 0 8px #b22222;
+    text-decoration: none;
+    border: 2px solid #8b0000;
+    padding: 10px 22px;
+    border-radius: 24px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .hero .catalog-link:hover,
+  .hero .catalog-link:focus {
+    background-color: #8b0000;
+    color: #0a0a0a;
+    text-shadow: none;
+  }
+  .hero .catalog-link svg {
+    width: 22px;
+    height: 22px;
+    stroke: #8b0000;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    animation: bounceArrow 2s infinite;
+  }
+  @keyframes bounceArrow {
+    0%, 100% {transform: translateY(0);}
+    50% {transform: translateY(4px);}
+  }
+
+  /* Bus Catalog */
+  .bus-catalog {
+    max-width: 1000px;
+    margin: 40px auto 60px;
+    padding: 0 16px;
+  }
+  .bus-catalog h2 {
+    text-align: center;
+    color: #8b0000;
+    font-size: 2.4rem;
+    margin-bottom: 40px;
+    font-weight: 900;
+    text-shadow: 0 0 6px #b22222;
+    letter-spacing: 1.2px;
+  }
+  .bus-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    gap: 24px;
+  }
+  .bus-card {
+    background-color: #121212;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(139,0,0,0.5);
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    color: #8b0000;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+  }
+  .bus-card:hover,
+  .bus-card:focus {
+    box-shadow: 0 18px 40px rgba(178,34,34,0.7);
+    transform: translateY(-6px);
+    outline: none;
+  }
+  .bus-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-bottom: 2px solid #8b0000;
+  }
+  .bus-card:hover img,
+  .bus-card:focus img {
+    transform: scale(1.05);
+  }
+  .bus-info {
+    padding: 18px 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .bus-info h3 {
+    margin: 0 0 8px;
+    font-size: 1.3rem;
+    color: #b22222;
+    font-weight: 900;
+    text-shadow: 0 0 4px #8b0000;
+  }
+  .bus-info h5 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #aaa;
+  }
+
+  /* How we work Section */
+  .how-we-work {
+    max-width: 900px;
+    margin: 40px auto 60px;
+    padding: 0 16px;
+    text-align: center;
+  }
+  .how-we-work h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 14px;
+    position: relative;
+    display: inline-block;
+    color: #8b0000;
+    text-shadow: 0 0 6px #b22222;
+  }
+  .how-we-work h2::after {
+    content: "";
+    display: block;
+    height: 3px;
+    width: 60px;
+    background: #8b0000;
+    margin: 12px auto 0;
+    border-radius: 3px;
+    box-shadow: 0 0 8px #b22222;
+  }
+  .steps {
+    margin-top: 36px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .step {
+    flex: 1 1 180px;
+    max-width: 180px;
+    color: #8b0000;
+  }
+  .step .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 16px;
+    border: 3px solid #8b0000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b0000;
+    font-size: 28px;
+    text-shadow: 0 0 8px #b22222;
+  }
+  .step h3 {
+    font-weight: 900;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  .step p {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #bbb;
+    line-height: 1.4;
+  }
+
+  /* Why Choose Us Section */
+  .why-choose-us {
+    position: relative;
+    background: url('{% static "img/footer-bg.jpg" %}') center center/cover no-repeat;
+    color: #8b0000;
+    padding: 60px 16px 80px;
+    text-shadow: 0 0 6px #b22222;
+  }
+  .why-choose-us::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,10,0.8);
+    z-index: 0;
+    border-radius: 24px 24px 0 0;
+  }
+  .why-choose-us .content {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    z-index: 1;
+  }
+  .why-choose-us h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .why-choose-us h2::after {
+    content: "";
+    display: block;
+    height: 3px;
+    width: 60px;
+    background: #8b0000;
+    margin: 10px auto 20px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px #b22222;
+  }
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 28px;
+  }
+  .reason {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .reason-icon {
+    width: 48px;
+    height: 48px;
+    border: 2.5px solid #8b0000;
+    border-radius: 50%;
+    color: #8b0000;
+    font-size: 24px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 0 0 8px #b22222;
+  }
+  .reason-text {
+    flex-grow: 1;
+    text-align: left;
+  }
+  .reason-text h3 {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: #b22222;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    text-shadow: 0 0 4px #8b0000;
+  }
+  .reason-text p {
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #ccc;
+  }
+
+  /* Top red strip */
+  .top-strip {
+    width: 100%;
+    height: 6px;
+    background: #8b0000;
+  }
+
+  /* Banner with buttons */
+  .banner {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background: url('{% static "img/5285488700261338656.jpg" %}') center/cover no-repeat;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 12px 24px;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 0 20px #8b0000;
+  }
+  .banner::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,10,0.8);
+    border-radius: 0 0 24px 24px;
+  }
+  .banner .menu {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .banner .menu a {
+    background: rgba(139,0,0,0.75);
+    padding: 8px 18px;
+    color: #fff;
+    font-weight: 900;
+    border-radius: 24px;
+    text-decoration: none;
+    transition: 0.3s;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(139,0,0,0.7);
+    letter-spacing: 1px;
+  }
+  .banner .menu a:hover,
+  .banner .menu a:focus {
+    background: #b22222;
+    box-shadow: 0 5px 16px #b22222;
+    outline: none;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .hero {
+      height: 300px;
+    }
+    .hero h1 {
+      font-size: 2rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
+    .bus-catalog {
+      margin: 30px auto 50px;
+    }
+    .bus-catalog h2 {
+      font-size: 2rem;
+      margin-bottom: 32px;
+    }
+    .bus-list {
+      grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+      gap: 20px;
+    }
+    .bus-card img {
+      height: 120px;
+    }
+    .how-we-work {
+      margin: 30px auto 50px;
+    }
+    .how-we-work h2 {
+      font-size: 1.7rem;
+    }
+    .steps {
+      gap: 20px;
+    }
+    .step {
+      max-width: 140px;
+    }
+    .why-choose-us {
+      padding: 50px 16px 60px;
+    }
+    .why-choose-us h2 {
+      font-size: 1.7rem;
+      margin-bottom: 12px;
+    }
+    .reasons-grid {
+      gap: 20px;
+      grid-template-columns: 1fr;
+    }
+    .reason-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      border-width: 2px;
+    }
+    .banner {
+      height: 160px;
+      padding: 8px 16px;
+      box-shadow: 0 0 16px #8b0000;
+    }
+    .banner .menu a {
+      padding: 6px 14px;
+      font-size: 0.9rem;
+    }
+  }
+  @media (max-width: 400px) {
+    .hero h1 {
+      font-size: 1.6rem;
+    }
+    .hero .phones {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .bus-catalog h2 {
+      font-size: 1.6rem;
+    }
+    .bus-list {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .bus-card img {
+      height: 100px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="top-strip"></div>
+
+
+
+<section class="hero" role="banner" aria-label="Головний банер">
+  <div class="hero-content">
+    <h1><strong>Dieller</strong> Bus</h1>
+    <p>Пасажирські перевезення по Україні та Польщі:<br>вирішуємо будь-які ЗАМОВЛЕННЯ !</p>
+    <p>Телефонуйте сьогодні:</p>
+    <div class="phones" aria-label="Телефонні номери">
+      <span><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2c-9.05-.5-16.42-8.87-16.92-16.92A2 2 0 016.1 3h3a2 2 0 012 1.72c.13 1.21.46 2.38.97 3.47a2 2 0 01-.45 2.11L10 11a16 16 0 007 7l.7-.7a2 2 0 012.11-.45c1.09.5 2.26.83 3.47.97a2 2 0 011.72 2z"/></svg></span>
+      <span><strong>Vodafone:)</strong> 050-176-30-30</span>
+      <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2" fill="none"/><path d="M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></span>
+    </div>
+    <a href="#catalog" class="catalog-link" aria-label="Перейти до каталогу автобусів">
+      Каталог автобусів
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg>
+    </a>
+  </div>
+</section>
+
+<section id="catalog" class="bus-catalog" aria-label="Каталог автобусів">
+  <h2>Каталог автобусів</h2>
+  <div class="bus-list">
+    <a href="{% url 'mercedes2' %}" class="bus-card" aria-label="Детальніше про автобус Mercedes O404">
+      <img src="{% static 'img/mercedes.jpg' %}" alt="Mercedes O404 темно-синій" />
+      <div class="bus-info">
+        <h3>Mercedes O404</h3>
+        <h5>темно-синій</h5>
+      </div>
+    </a>
+    <a href="{% url 'neoplanred' %}" class="bus-card" aria-label="Детальніше про автобус Neolan N316 червоний">
+      <img src="{% static 'img/5269672762366693910.jpg' %}" alt="Neolan N316 червоний" />
+      <div class="bus-info">
+        <h3>Neolan N316</h3>
+        <h5>червоний</h5>
+      </div>
+    </a>
+    <a href="{% url 'neolplanwhite' %}" class="bus-card" aria-label="Детальніше про автобус Neolan N316 білий">
+      <img src="{% static 'img/neoplanwhite.jpg' %}" alt="Neolan N316 білий" />
+      <div class="bus-info">
+        <h3>Neolan N316</h3>
+        <h5>білий</h5>
+      </div>
+    </a>
+
+    <a href="{% url 'bova' %}" class="bus-card" aria-label="Детальніше про автобус Bova коричнева">
+      <img src="{% static 'img/bova.jpg' %}" alt="Bova коричнева" />
+      <div class="bus-info">
+        <h3>Bova</h3>
+        <h5>коричнева</h5>
+      </div>
+    </a>
+
+    <a href="{% url 'eos' %}" class="bus-card" aria-label="Детальніше про автобус Eos e-200 білий">
+      <img src="{% static 'img/eos.jpg' %}" alt="Eos e-200 білий" />
+      <div class="bus-info">
+        <h3>Eos e-200</h3>
+        <h5>білий</h5>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="how-we-work" aria-label="Як з нами працювати">
+  <h2>Як з нами працювати</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="icon-wrapper" aria-hidden="true">🚌</div>
+      <h3>Вибираєте автобус</h3>
+      <p>Придивіться автобус за смаком</p>
+    </div>
+    <div class="step">
+      <div class="icon-wrapper" aria-hidden="true">📞</div>
+      <h3>Телефонуйте менеджеру</h3>
+      <p>Наш фахівець уточнює з вами деталі поїздки</p>
+    </div>
+    <div class="step">
+      <div class="icon-wrapper" aria-hidden="true">📅</div>
+      <h3>Бронюйте квиток</h3>
+      <p>Після узгодження деталей оплачуєте</p>
+    </div>
+    <div class="step">
+      <div class="icon-wrapper" aria-hidden="true">🤝</div>
+      <h3>Подаємо транспорт на автостанцію</h3>
+      <p>Отримуєте послугу відповідно до ваших побажань</p>
+    </div>
+  </div>
+</section>
+
+<section class="why-choose-us" aria-label="Чому вибирають нас?">
+  <div class="content">
+    <h2>Чому вибирають нас?</h2>
+    <div class="reasons-grid">
+      <div class="reason">
+        <div class="reason-icon" aria-hidden="true">🤝</div>
+        <div class="reason-text">
+          <h3>Партнерство</h3>
+          <p>Ми можемо працювати на постійній основі і організація пасажирських перевезень здійснюється з усією дозволеною документацією (страховки, ліцензії, путівки)</p>
+        </div>
+      </div>
+      <div class="reason">
+        <div class="reason-icon" aria-hidden="true">💰</div>
+        <div class="reason-text">
+          <h3>Доступні ціни</h3>
+          <p>Недорого взяти квиток на наші автобуси можна для регулярних перевезень до Пулав та Луцька. Також можливо замовити автобус за номерами телефонів</p>
+        </div>
+      </div>
+      <div class="reason">
+        <div class="reason-icon" aria-hidden="true">✔️</div>
+        <div class="reason-text">
+          <h3>Комфорт</h3>
+          <p>Автобуси обладнані всіма необхідними: міні-тулети, грубка і кондиціонер, комфортні крісла, ремені безпеки.</p>
+        </div>
+      </div>
+      <div class="reason">
+        <div class="reason-icon" aria-hidden="true">8</div>
+        <div class="reason-text">
+          <h3>10 років досвіду</h3>
+          <p>Ми працюємо більше 10 років, наш досвід – це запорука вашого спокою і задоволення!</p>
+        </div>
+      </div>
+      <div class="reason">
+        <div class="reason-icon" aria-hidden="true">👨‍✈️</div>
+        <div class="reason-text">
+          <h3>Кращі водії</h3>
+          <p>Наші водії мають величезний досвід міжнародних поїздок і відкриті візи, всі супутні документи оформлюємо швидко і якісно.</p>
+        </div>
+      </div>
+      <div class="reason">
+        <div class="reason-icon" aria-hidden="true">🚌</div>
+        <div class="reason-text">
+          <h3>Великий автопарк</h3>
+          <p>Транспорт завжди в ідеальному стані: автобуси (50 місць)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

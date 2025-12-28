@@ -1,0 +1,22 @@
+/* Стилі для сторінки профілю profile.html */
+@import url('header.css');
+@import url('buttons.css');
+@import url('main.css');
+
+/* Додаткові стилі для профілю */
+.profile-balance {
+  font-size: 1.2rem;
+  color: #ff7f00;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.profile-tickets {
+  margin-bottom: 18px;
+}
+.profile-section {
+  background: #fff7f0;
+  border-radius: 12px;
+  padding: 18px 10px;
+  box-shadow: 0 2px 8px #ffae4222;
+  margin-bottom: 10px;
+}

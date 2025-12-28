@@ -1,0 +1,7 @@
+/* Стилі для головної сторінки index.html */
+@import url('header.css');
+@import url('buttons.css');
+@import url('main.css');
+@import url('sections.css');
+
+/* Додаткові унікальні стилі для index.html можна додати тут */

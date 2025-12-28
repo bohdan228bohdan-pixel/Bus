@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Оформлення квитка — Dieller Bus{% endblock %}
+
+{% block head_extra %}
+<style>
+  body {
+    background-color: #1a1a1a;
+    color: #ff0000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #000;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #ff0000aa;
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 900;
+    font-size: 2.4rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 8px #ff0000cc;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  label {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ff3333;
+    margin-bottom: 8px;
+    display: block;
+    text-shadow: 0 0 6px #ff3300cc;
+  }
+
+  select, input[type="date"], input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #ff0000;
+    background-color: #1a1a1a;
+    color: #ff0000;
+    box-shadow: 0 0 8px #ff0000aa inset;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  select:focus, input[type="date"]:focus, input[type="number"]:focus {
+    border-color: #ff6666;
+    box-shadow: 0 0 12px #ff6666aa inset;
+  }
+
+  .price-display {
+    background-color: #220000;
+    border: 2px solid #ff0000;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ff6666;
+    text-align: center;
+    text-shadow: 0 0 8px #ff3300bb;
+    margin-top: 10px;
+  }
+
+  .btn-pay {
+    background: linear-gradient(180deg, #ff0000, #cc0000);
+    border: none;
+    color: #fff;
+    font-weight: 900;
+    font-size: 1.3rem;
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff0000bb;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+  .btn-pay:hover, .btn-pay:focus {
+    background: linear-gradient(180deg, #cc0000, #ff0000);
+    box-shadow: 0 0 26px #ff6666cc;
+    outline: none;
+  }
+
+  /* Table for routes and tickets */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    color: #ff4d4d;
+  }
+
+  th, td {
+    border: 2px solid #ff0000;
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: 700;
+    text-shadow: 0 0 6px #ff0000bb;
+  }
+
+  th {
+    background-color: #330000;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #220000;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container {
+      margin: 20px 15px;
+      padding: 15px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    form {
+      gap: 15px;
+    }
+
+    .price-display {
+      font-size: 1.2rem;
+      padding: 12px;
+    }
+
+    .btn-pay {
+      font-size: 1.1rem;
+      padding: 12px;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" role="main" aria-labelledby="pageTitle">
+  <h1 id="pageTitle">Оформлення квитка</h1>
+
+  <form id="ticketForm" novalidate>
+    <div>
+      <label for="from">Звідки</label>
+      <select id="from" required aria-required="true" aria-describedby="fromDesc">
+        <option value="" disabled selected>Оберіть пункт відправлення</option>
+        <option>Луцьк</option>
+        <option>Ковель</option>
+        <option>Ягодин</option>
+      </select>
+      <span id="fromDesc" class="sr-only">Оберіть місто відправлення</span>
+    </div>
+
+    <div>
+      <label for="to">Куди</label>
+      <select id="to" required aria-required="true" aria-describedby="toDesc">
+        <option value="" disabled selected>Оберіть пункт призначення</option>
+        <option>Хелм</option>
+        <option>Люблін</option>
+        <option>Пулави</option>
+      </select>
+      <span id="toDesc" class="sr-only">Оберіть місто призначення</span>
+    </div>
+
+    <div>
+      <label for="departureDate">Дата поїздки</label>
+      <input type="date" id="departureDate" required aria-required="true" min="{{ today }}">
+    </div>
+
+    <div>
+      <label for="passengers">Пасажири</label>
+      <input type="number" id="passengers" min="1" max="5" value="1" required aria-required="true" aria-describedby="passengersDesc">
+      <span id="passengersDesc" class="sr-only">Введіть кількість пасажирів від 1 до 5</span>
+    </div>
+
+    <div class="price-display" id="priceDisplay" aria-live="polite" aria-atomic="true">
+      Виберіть маршрут та дату, щоб побачити ціну
+    </div>
+
+    <button type="submit" class="btn-pay" aria-label="Оплатити квиток">Оплатити</button>
+  </form>
+
+  <table style="border-collapse: collapse; width: 100%; color: red; border: 1px solid red;">
+  <thead>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <th style="border: 1px solid rgb(2, 255, 56); 8px;">Ім'я шофера</th>
+      <th style="border: 1px solid rgb(2, 255, 56); 8px;">Номер телефону</th>
+      <th style="border: 1px solid rgb(2, 255, 56); 8px;">Польський номер </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">Володимир</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+38 050 662 21 06</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+48 692 16 70 41</td>
+    </tr>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">Анатолій</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+38 050 176 30 30</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+48 692 16 70 41</td>
+    </tr>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">Іван</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+38 095 588 81 13</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+48 880 47 96 21</td>
+    </tr>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">Петро</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+38 050 951 52 58</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+48 880 47 96 21</td>
+    </tr>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">Віталій</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+38 097 419 00 27</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+48 886 26 56 67</td>
+    </tr>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">Леонід</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+38 098 266 52 02</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+48 888 86 89 89</td>
+    </tr>
+    <tr style="border: 1px solid rgb(2, 255, 56);">
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">Людмила (диспетчер)</td>
+      <td style="border: 1px solid rgb(2, 255, 56); 8px;">+38 066 801 92 55</td>
+      <td style="border: 1px solid rgb(2, 255, 56); padding: 8px;">+38 097 419 28 10</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const prices = {
+      'Луцьк->Хелм': 500, 'Луцьк->Люблін': 600, 'Луцьк->Пулави': 800,
+      'Ковель->Хелм': 400, 'Ковель->Люблін': 500, 'Ковель->Пулави': 700,
+      'Ягодин->Хелм': 400, 'Ягодин->Люблін': 500, 'Ягодин->Пулави': 650,
+    };
+    const returnPrices = {
+      'Хелм->Луцьк': 80, 'Люблін->Луцьк': 70, 'Пулави->Луцьк': 60,
+      'Хелм->Ковель': 70, 'Люблін->Ковель': 60, 'Пулави->Ковель': 60,
+      'Хелм->Ягодин': 50, 'Люблін->Ягодин': 50, 'Пулави->Ягодин': 50,
+    };
+
+    const fromSelect = document.getElementById('from');
+    const toSelect = document.getElementById('to');
+    const passengersInput = document.getElementById('passengers');
+    const priceDisplay = document.getElementById('priceDisplay');
+    const form = document.getElementById('ticketForm');
+
+    function calculatePrice() {
+      const from = fromSelect.value;
+      const to = toSelect.value;
+      const passengers = parseInt(passengersInput.value, 10) || 1;
+      if (!from || !to || from === to) {
+        priceDisplay.textContent = 'Оберіть різні пункти відправлення і призначення.';
+        return;
+      }
+      const key = `${from}->${to}`;
+      const price = prices[key];
+      if (!price) {
+        priceDisplay.textContent = 'Маршрут недоступний.';
+        return;
+      }
+      priceDisplay.textContent = `Ціна за квиток: ${price} ₴ × ${passengers} пасажир(ів) = ${price * passengers} ₴`;
+    }
+
+    fromSelect.addEventListener('change', calculatePrice);
+    toSelect.addEventListener('change', calculatePrice);
+    passengersInput.addEventListener('input', calculatePrice);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const from = fromSelect.value;
+      const to = toSelect.value;
+      const passengers = passengersInput.value;
+      if (!from || !to || from === to) {
+        alert('Будь ласка, виберіть різні пункти відправлення та призначення.');
+        return;
+      }
+      const key = `${from}->${to}`;
+      const price = prices[key];
+      if (!price) {
+        alert('Вибраний маршрут недоступний.');
+        return;
+      }
+      alert(`Ви оформили квиток:\nМаршрут: ${from} → ${to}\nПасажири: ${passengers}\nЗагальна сума: ${price * passengers} ₴\n\nДякуємо за покупку!`);
+      // Тут можна додати логіку оплати або перенаправлення на платіжний шлюз
+    });
+  });
+</script>
+
+  {% csrf_token %}
+
+  <input type="hidden" name="from_city" value="Луцьк">
+  <input type="hidden" name="to_city" value="Хелм">
+  <input type="hidden" name="travel_date" value="2025-12-20">
+  <input type="hidden" name="passengers" value="1">
+  <input type="hidden" name="price" value="500">
+
+  <button type="submit" class="btn-pay">Оплатити</button>
+</form>
+{% endblock %}
