@@ -20,6 +20,34 @@
   <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script defer src="{% static 'js/animations.js' %}"></script>
+
+  <style>
+    /* Home routes section */
+    .routes{padding:40px 0}
+    .routes-title{
+      text-align:center;
+      font-weight:900;
+      letter-spacing:1px;
+      color:var(--accent-red-soft);
+      margin:0 0 10px;
+    }
+    .routes-sub{
+      text-align:center;
+      color:var(--muted);
+      margin:0 0 18px;
+    }
+    .route-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.30));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:16px;
+      overflow:hidden;
+      height:100%;
+    }
+    .route-card img{width:100%;height:220px;object-fit:cover;display:block}
+    .route-body{padding:14px}
+    .route-name{font-weight:900;margin:0;color:#fff;text-align:center}
+    .route-desc{color:var(--muted);font-size:14px;margin:10px 0 0;text-align:center}
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -84,6 +112,25 @@
             <div class="icon">🔒</div>
             <h4>Безпека</h4>
             <p>Досвідчені водії та регулярні техогляди.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- НАШІ МАРШРУТИ -->
+    <section class="routes container" data-aos="fade-up">
+      <h2 class="routes-title">НАШІ МАРШРУТИ</h2>
+      <p class="routes-sub">Маршрути розроблені так, щоб ви могли подорожувати з максимальним комфортом і без зайвих турбот.</p>
+
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="route-card">
+            <!-- фото ти підставиш сам -->
+            <img src="{% static 'img/Пулави.jpg' %}" alt="Луцьк — Пулави">
+            <div class="route-body">
+              <h3 class="route-name">ЛУЦЬК → ПУЛАВИ</h3>
+              <p class="route-desc">Рейс Луцьк → Пулави — зручний спосіб дістатися до Польщі. Комфортні автобуси, зручний графік та підтримка.</p>
+            </div>
           </div>
         </div>
       </div>
